@@ -45,6 +45,18 @@ TabItem {
             spacing: Theme.paddingSmall
 
             TextField {
+                text: facts.name
+                label: qsTr("Geocache name")
+                readOnly: true
+            }
+
+            TextField {
+                text: facts.code
+                label: qsTr("Geocache code")
+                readOnly: true
+            }
+
+            TextField {
                 text: facts.owner
                 label: qsTr("Owner")
                 readOnly: true

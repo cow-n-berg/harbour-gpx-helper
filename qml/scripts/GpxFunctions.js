@@ -28,7 +28,8 @@ function gpxDecode(rawText) {
     var regExText   = /<groundspeak:text\s[^>]+>(.+?)<\/groundspeak:text>/;
     var regExDtTm   = /([0-9]{4}-[0-9]{2}-[0-9]{2})/;
     var regExWpNr   = /([0-9]+)/;
-    var regExPark   = /Parking/;
+    var regExWpChar = /([A-Z]+)/g;
+    var regExPark   = /Parking|Parkeren|Parkeer/;
 
     var regExHidCmt = /([A-Z0-9]{2})[A-Z0-9]{2,6}\s-\s(.*?)<br\s\/>(.*?)<br\s\/>(.*?)<br\s\/>/g;
 
@@ -42,7 +43,7 @@ function gpxDecode(rawText) {
     var regExString = "([NS][^#]{5," + searchLength + "}\\s[EW][^#&,'|]{5," + searchLength + "})"
     var regExFormul = new RegExp(regExString, "g");
     // Should be like /([NS][^#]{5,40}\s[EW][^#&,'|]{5,40})/g
-    var regExLetter = /([A-Z]){1}[^A-Za-z0-9]/g;
+    var regExLetter = /\W([A-Z]){1}[^A-Za-z0-9]/g;
 
     var result      = {};
     var description = [];
@@ -160,7 +161,7 @@ function gpxDecode(rawText) {
     do {
         val = regExHidCmt.exec(wpts);
         if (val !== null) {
-//            console.log(JSON.stringify(val));
+            console.log(JSON.stringify(val));
             wpSym   = val[1];
             wpDesc  = val[2];
             wpCoord = val[3].trim();
@@ -186,15 +187,28 @@ function gpxDecode(rawText) {
                 wpNr = nr;
             }
             else {
+                if (wpSym.substring(0, 1) === "0") {
+                    wpSym = wpSym.substring(1, 2);
+                    console.log(wpSym);
+                }
+                tmp = regExWpChar.exec(wpSym);
                 // Test the formula
-                tmp = regExWpNr.exec(wpSym);
                 if (tmp) {
-                    nr = parseInt(tmp[1]);
+                    console.log(tmp[1]);
+                    nr = stringValues( tmp[1] );
                     wpNr = nr;
                 }
                 else {
-                    nr++;
-                    wpNr = nr;
+                    tmp = regExWpNr.exec(wpSym);
+                    if (tmp) {
+                        console.log(tmp[1]);
+                        nr = parseInt(tmp[1]);
+                        wpNr = nr;
+                    }
+                    else {
+                        nr++;
+                        wpNr = nr;
+                    }
                 }
             }
 
@@ -322,7 +336,7 @@ function gpxDecode(rawText) {
                                 if (letters.indexOf(lttr) < 0) {
                                     letters.push(lttr);
                                     addLetters.push(lttr);
-                                    // console.log("Letter found: " + lttr + " within: " + txt);
+                                     console.log("Letter found: " + lttr + " within: " + txt);
                                 }
                             }
                         } while (tmp !== null)
@@ -494,4 +508,58 @@ function coordFromDesc(txt) {
     }
 
     return coordinate
+}
+
+/*
+*  Function to calculate string value for string
+*/
+function stringValues( str ) {
+    var regExCapitals = /[A-Z]/g;
+    var valueLetters = 0;
+    var res;
+
+    if (str !== "" ) {
+        // Extract all letters
+        do {
+            res = regExCapitals.exec( str.toUpperCase() );
+//            console.log(res);
+            if (res !== null) {
+                valueLetters += res[0].charCodeAt(0) - 64;
+            }
+        } while (res !== null)
+    }
+
+    return valueLetters;
+}
+
+/*
+*  Function to calculate cross value for string
+*/
+function crossValues( str ) {
+    var regExCapitals = /[A-Z]/g;
+    var valueLetters = 0;
+    var countLetters = 0;
+    var crossLetters = 0;
+    var res;
+
+    if (str !== "" ) {
+        // Extract all letters
+        do {
+            res = regExCapitals.exec( str.toUpperCase() );
+//            console.log(res);
+            if (res !== null) {
+                countLetters++;
+                valueLetters += res[0].charCodeAt(0) - 64;
+            }
+        } while (res !== null)
+
+        crossLetters = valueLetters % 9;
+    }
+
+    // Modulo result 0 should be a 9
+    if (countLetters > 0 && crossLetters === 0) {
+        crossLetters = 9
+    }
+
+    return crossLetters;
 }

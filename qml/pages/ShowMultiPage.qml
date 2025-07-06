@@ -1,20 +1,20 @@
 import QtQuick 2.6
 import Sailfish.Silica 1.0
 import "../modules/Opal/Tabs"
-import "../scripts/GpxFunctions.js" as GPX
+//import "../scripts/GpxFunctions.js" as GPX
 
 Page {
     id: root
 
-    property string gpxFile : generic.gpxFile
-    property var    cache
+//    property string gpxFile : generic.gpxFile
+    property var    cache   : generic.cache
 
     allowedOrientations: Orientation.Portrait
 
-    Component.onCompleted: {
-        cache = GPX.gpxDecode(gpxFile)
-        generic.cache = cache
-    }
+//    Component.onCompleted: {
+//        cache = GPX.gpxDecode(gpxFile)
+//        generic.cache = cache
+//    }
 
     TabView {
         id: tabs

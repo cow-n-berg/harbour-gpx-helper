@@ -1,5 +1,6 @@
 import QtQuick 2.6
 import Sailfish.Silica 1.0
+import Nemo.Notifications 1.0
 import "../modules/Opal/Delegates"
 import "../modules/Opal/Tabs"
 
@@ -10,6 +11,7 @@ TabItem {
     property int    listLen : 0
     property int    lenChar
     property int    lenLine
+    property string copyMessage: ""
 
     ListModel {
         id: wptsModel
@@ -30,6 +32,16 @@ TabItem {
         console.log(JSON.stringify(cache))
         console.log(JSON.stringify(cache.waypoints))
         wptsModel.update(cache.waypoints)
+    }
+
+    Notification {
+        id: notification
+
+        summary: copyMessage
+        body: "GPX Helper"
+        expireTimeout: 500
+        urgency: Notification.Low
+        isTransient: true
     }
 
     SilicaFlickable {
@@ -60,19 +72,27 @@ TabItem {
 
                 delegate: ThreeLineDelegate {
                     id: wpt
-                    title: number + " | " + descript + (txtLetter ? " | Find: " : "") + txtLetter
+                    title: number + " | " + descript + (txtLetter ? " | " + qsTr("Find") + ": " : "") + txtLetter
                     text: coordinate
                     description: instruction
                     descriptionLabel.wrapped: wrapped
+
+                    rightItem: DelegateIconButton {
+                        iconSource: "image://theme/icon-m-clipboard"
+                        iconSize: Theme.iconSizeSmallPlus
+                        onClicked: {
+                            Clipboard.text = coordinate + " | " + descript + (txtLetter ? " | " + qsTr("Find") + ": " : "") + txtLetter
+                            copyMessage = qsTr("Text copied")
+                            notification.publish()
+                        }
+                    }
 
                     onClicked: {
                         //toggleWrappedText(descriptionLabel)
                         wrapped = !wrapped
                     }
-
                 }
             }
-
         }
     }
 }

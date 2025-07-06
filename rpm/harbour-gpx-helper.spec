@@ -1,7 +1,7 @@
 Name:       harbour-gpx-helper
 
 Summary:    Exploring the contents of a Geocaching gpx file
-Version:    0.1
+Version:    0.2
 Release:    1
 License:    LICENSE
 BuildArch:  noarch

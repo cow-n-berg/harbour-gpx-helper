@@ -18,6 +18,7 @@ Page {
     property string gpxFile      : generic.gpxFile
     property string wpt          : "empty"
     property string copyMessage  : ""
+    property var    cache
 
     Notification {
         id: notification
@@ -84,11 +85,44 @@ Page {
                             console.log(gpxFile)
                             copyMessage = "File selected"
                             notification.publish()
-
+                            cache = GPX.gpxDecode(gpxFile)
+                            generic.cache = cache
                         }
                     }
                 }
 
+            }
+
+            SectionHeader {
+                text: qsTr("Geocache")
+            }
+
+            TextField {
+                text: cache ? cache.facts.name : ""
+                label: qsTr("Geocache name")
+                readOnly: true
+            }
+
+            TextField {
+                text: cache ? cache.facts.code : ""
+                label: qsTr("Geocache code")
+                readOnly: true
+            }
+
+            TextField {
+                text: cache ? cache.facts.owner : ""
+                label: qsTr("Owner")
+                readOnly: true
+            }
+
+            TextField {
+                text: cache ? cache.facts.type + ", " + cache.facts.container + ", " + qsTr("D/T") + " " + cache.facts.difficult + "/" + cache.facts.terrain : ""
+                label: qsTr("Cache type")
+                readOnly: true
+            }
+
+            SectionHeader {
+                text: qsTr("GPX File")
             }
 
             TextField {

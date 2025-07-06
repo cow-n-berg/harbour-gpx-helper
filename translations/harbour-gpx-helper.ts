@@ -33,6 +33,34 @@
         <source>Show GPX Multi page</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Geocache name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geocache code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>D/T</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GPX File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geocache</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MultiDescTab</name>
@@ -79,11 +107,27 @@
         <source>Logs</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Geocache name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Geocache code</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MultiWptsTab</name>
     <message>
         <source>No waypoints yet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Find</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Text copied</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
